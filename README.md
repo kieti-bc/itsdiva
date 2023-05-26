@@ -4,6 +4,20 @@ Tool to convert code to syntax highlighted html format
 Työkalu, jolla voi muuntaa koodia html muotoon ItsLearning alustaa varten.
 
 
+## Käyttö
+* Mene hakemistoon jossa koodi on
+* Käynnistä ohjelma komennolla 
+```bash
+python itsdiva.py
+```
+* Valitse pudotusvalikosta kieli
+* Valitse pudotusvalikosta väriteema
+* Kirjoita tai liitä ylempään tekstikenttään koodi
+* Paina **Convert** nappia
+* Klikkaa alempaa tekstikenttää, kopioi koodi painamalla **Ctrl + A**  ja **Ctrl + C**
+* Paina ItsLearning muotoiluvalikosta **Koodi** nappia
+* Liitä luotu hmtl haluaamaasi kohtaan painamalla **Ctrl + V**
+
 
 ## Uusien tyylien luominen
 Lisää styles/ kansioon uusi .json tiedosto, jonka sisältö on muotoa
