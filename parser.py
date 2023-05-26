@@ -1,11 +1,11 @@
 
 from scanner import Scanner
+from token_types import Token, TokenType
 
 # HTML constants
 nbsp = "&nbsp;"
 
 class Parser:
-
 
 	# CSS class names
 	class_names = {
@@ -16,16 +16,14 @@ class Parser:
 		TokenType.COMMENT: "cc",
 		TokenType.DOC_COMMENT: "dc",
 		TokenType.OPERATOR: "op",
-		TokenType.FUNCTION: "ft",
+		TokenType.FUNCTION: "fc",
 	}
 
-	def __init__(source_lines, style, language, user_types):
+	def __init__(self, source_lines, style, language, user_types):
 		self.code_lines = source_lines
 		self.style = style
 		self.language = language
 		self.user_types = user_types
-
-
 
 	def create_span(self, class_name, text):
 		span = "<span class=\"{class_name}\">{text}</span>".format(class_name=class_name, text=text)
@@ -33,17 +31,17 @@ class Parser:
 
 	def create_css(self, style):
 		css = """
-		<style =\" \
-		.kw {{ color:{kw_color}; }} \
-		.ct {{ color:{ct_color}; }} \
-		.ut {{ color:{ut_color}; }} \
-		.pt {{ color:{pt_color}; }} \
-		.cc {{ color:{cc_color}; }} \
-		.dc {{ color:{dc_color}; }} \
-		.op {{ color:{op_color}; }} \
-		.fc {{ color:{fc_color}; }} \
-		\"
-		""".format(kw_color=style[TokenType.KEYWORD],
+<style>\
+.kw {{ color:{kw_color}; }} \
+.ct {{ color:{ct_color}; }} \
+.ut {{ color:{ut_color}; }} \
+.pt {{ color:{pt_color}; }} \
+.cc {{ color:{cc_color}; }} \
+.dc {{ color:{dc_color}; }} \
+.op {{ color:{op_color}; }} \
+.fc {{ color:{fc_color}; }} \
+</style>
+""".format(kw_color=style[TokenType.KEYWORD],
 		ct_color=style[TokenType.CONSTANT],
 		ut_color=style[TokenType.USER_TYPE],
 		pt_color=style[TokenType.PRIMITIVE_TYPE],
@@ -88,18 +86,18 @@ class Parser:
 		html_lines = []
 		html_lines.append(self.create_css(self.style))
 
-		div = """
-		<div style=\"\
-		font-family:monospace;\
-		border-width:0.1em;\
-		border-style:solid;\
-		border-color:Black;\
-		color:{fg};\
-		background-color:{bg};\"\
-		""".format(fg=style["default"], bg=style["background"])
+		div = """\
+<div style=\"\
+font-family:monospace;\
+border-width:0.1em;\
+border-style:solid;\
+border-color:Black;\
+color:{fg};\
+background-color:{bg};\">\
+		""".format(fg=self.style["default"], bg=self.style["background"])
 
 		html_lines.append(div)
-		for line in code_lines:
+		for line in self.code_lines:
 			html_lines.append(self.convert_to_html(line, self.style, self.language, self.user_types))
 
 		html_lines.append("</div>")
