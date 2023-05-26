@@ -14,6 +14,7 @@ class TokenType(Enum):
 	TEXT = auto()
 	WHITESPACE = auto()
 	TAB = auto()
+	NEWLINE = auto()
 
 class Token:
 	def __init__(self, type, text):

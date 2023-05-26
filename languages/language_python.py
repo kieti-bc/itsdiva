@@ -1,4 +1,6 @@
 
+from token_types import TokenType
+
 class Language_Python:
 
 	# If this token is specific to this language

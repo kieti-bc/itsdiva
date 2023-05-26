@@ -5,21 +5,22 @@ from token_types import Token, TokenType
 # HTML constants
 nbsp = "&nbsp;"
 
+# CSS class names
+class_names = {
+	TokenType.KEYWORD: "kw",
+	TokenType.CONSTANT: "ct",
+	TokenType.USER_TYPE: "ut",
+	TokenType.PRIMITIVE_TYPE: "pt",
+	TokenType.COMMENT: "cc",
+	TokenType.DOC_COMMENT: "dc",
+	TokenType.OPERATOR: "op",
+	TokenType.FUNCTION: "fc",
+}
+
 class Parser:
 
-	# CSS class names
-	class_names = {
-		TokenType.KEYWORD: "kw",
-		TokenType.CONSTANT: "ct",
-		TokenType.USER_TYPE: "ut",
-		TokenType.PRIMITIVE_TYPE: "pt",
-		TokenType.COMMENT: "cc",
-		TokenType.DOC_COMMENT: "dc",
-		TokenType.OPERATOR: "op",
-		TokenType.FUNCTION: "fc",
-	}
 
-	def __init__(self, source_lines, style, language, user_types):
+	def __init__(self, source_lines, style:dict, language, user_types):
 		self.code_lines = source_lines
 		self.style = style
 		self.language = language
@@ -41,14 +42,14 @@ class Parser:
 .op {{ color:{op_color}; }} \
 .fc {{ color:{fc_color}; }} \
 </style>
-""".format(kw_color=style[TokenType.KEYWORD],
-		ct_color=style[TokenType.CONSTANT],
-		ut_color=style[TokenType.USER_TYPE],
-		pt_color=style[TokenType.PRIMITIVE_TYPE],
-		cc_color=style[TokenType.COMMENT],
-		dc_color=style[TokenType.DOC_COMMENT],
-		op_color=style[TokenType.OPERATOR],
-		fc_color=style[TokenType.FUNCTION],
+""".format(kw_color=style[class_names[TokenType.KEYWORD]],
+		ct_color=style[class_names[TokenType.CONSTANT]],
+		ut_color=style[class_names[TokenType.USER_TYPE]],
+		pt_color=style[class_names[TokenType.PRIMITIVE_TYPE]],
+		cc_color=style[class_names[TokenType.COMMENT]],
+		dc_color=style[class_names[TokenType.DOC_COMMENT]],
+		op_color=style[class_names[TokenType.OPERATOR]],
+		fc_color=style[class_names[TokenType.FUNCTION]]
 		)
 		return css
 
@@ -57,16 +58,34 @@ class Parser:
 		tokens = s.get_tokens()
 		return tokens
 
-	def convert_to_html(self, line, style, language, user_types):
+	def convert_token_text(self, token) -> str:
+		if token.type == TokenType.COMMENT or \
+			token.type == TokenType.DOC_COMMENT or \
+			token.type == TokenType.OPERATOR or \
+			token.type == TokenType.CONSTANT:
+			token.text = token.text.replace('&', "&amp;")
+			token.text = token.text.replace('<', "&gt;")
+			token.text = token.text.replace('>', "&lt;")
+			if token.text.startswith("\"") or token.text.startswith('\''):
+				token.text = token.text.replace('\"', "&quot;")
+				token.text = token.text.replace('\'', "&apos;")
+
+	def convert_to_html(self, line, style:dict, language, user_types):
 		# Tokenize
 		tokens = self.tokenize_line(line, language, user_types)
 		# Iterate tokens
 		line = ""
+
+
+
 		for t in tokens:
 			# create spans
 			# concatenate
-			if t.type in style:
-				class_name = Parser.class_names[t.type]
+			# Change some characters to html 
+			self.convert_token_text(t)
+
+			if t.type in class_names:
+				class_name = class_names[t.type]
 				line += self.create_span(class_name, t.text)
 			else:
 				match t.type:
@@ -94,11 +113,14 @@ border-style:solid;\
 border-color:Black;\
 color:{fg};\
 background-color:{bg};\">\
-		""".format(fg=self.style["default"], bg=self.style["background"])
+		""".format(fg=self.style["fg"], bg=self.style["bg"])
 
 		html_lines.append(div)
 		for line in self.code_lines:
-			html_lines.append(self.convert_to_html(line, self.style, self.language, self.user_types))
+			try:
+				html_lines.append(self.convert_to_html(line, self.style, self.language, self.user_types))
+			except BaseException:
+				pass
 
 		html_lines.append("</div>")
 

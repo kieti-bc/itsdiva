@@ -3,9 +3,13 @@
 # 
 
 import tkinter as tk
+import tkinter.ttk as ttk
 
-from styles.style_light import Style_Light
-from styles.style_dark import Style_Dark
+import json
+import os
+# File wildcards
+import glob
+
 from languages.language_csharp import Language_Csharp
 from languages.language_python import Language_Python
 from parser import Parser
@@ -13,17 +17,12 @@ from parser import Parser
 python = Language_Python()
 csharp = Language_Csharp()
 
-def select_python():
-	label_selected_language["text"] = python.name
-	
-def select_csharp():
-	label_selected_language["text"] = csharp.name
 
-def select_style_light():
-	label_selected_style["text"] = "Light"
+def handle_language_select(event):
+	dropdown_language.selection_clear()
 
-def select_style_dark():
-	label_selected_style["text"] = "Dark"
+def handle_style_select(event):
+	dropdown_style.select_clear()
 
 def get_language(name):
 	match name:
@@ -33,11 +32,9 @@ def get_language(name):
 			return csharp
 
 def get_style(name):
-	match name:
-		case "Light":
-			return Style_Light()
-		case "Dark":
-			return Style_Dark()
+	for style in styles:
+		if style["name"] == name:
+			return style 
 
 def convert():
 	code = text_input.get("1.0", tk.END)
@@ -46,46 +43,77 @@ def convert():
 
 	user_types = []
 
-	language = get_language(label_selected_language["text"])
-	style = get_style(label_selected_style["text"])
+	language = get_language(dropdown_language.get())
+	style = get_style(dropdown_style.get())
 
-	parser = Parser(code_lines, style.colors, language, user_types)
+	parser = Parser(code_lines, style, language, user_types)
 	html_lines = parser.create_html()
 
 	for line in html_lines:
 		text_output.insert(tk.END, line)
 
+
+def read_style_json(filename) -> dict:
+	style_dic = {}
+	with open(filename, encoding="utf-8") as f:
+		read_data = f.read()
+		style_dic = json.loads(read_data)
+
+	return style_dic
+
+def read_style_files():
+	styles = []
+	os.chdir('styles')
+	style_files = glob.glob("*.json")
+	for f in style_files:
+		styles.append(read_style_json(f))
+	return styles
+
+styles = read_style_files()
+
 # Widgets
 window = tk.Tk()
 frame_language = tk.Frame(master=window)
+
 label_language = tk.Label(text="Choose language", master=frame_language)
-button_python = tk.Button(text="Python", command=select_python, master=frame_language)
-button_csharp = tk.Button(text="C sharp", command=select_csharp, master=frame_language)
-label_selected_language = tk.Label(text="csharp", master=frame_language)
+
+dropdown_language = ttk.Combobox(master=frame_language)
+dropdown_language["values"] = (csharp.name, python.name)
+dropdown_language.set(csharp.name)
+dropdown_language.state(["readonly"])
+dropdown_language.bind("<<ComboboxSelected>>", handle_language_select)
+
 frame_style = tk.Frame(master=window)
-button_style_light = tk.Button(text="Light", command=select_style_light, master=frame_style)
-button_style_dark = tk.Button(text="Dark", command=select_style_dark, master=frame_style)
-label_selected_style = tk.Label(text="Light", master=frame_style)
+label_style = tk.Label(text="Choose style", master=frame_style)
+dropdown_style = ttk.Combobox(master=frame_style)
+
+# Read styles from styles/ folder
+style_names = []
+for s in styles:
+	style_names.append(s["name"])
+
+dropdown_style["values"] = style_names
+dropdown_style.set(style_names[0])
+dropdown_style.state(["readonly"])
+dropdown_style.bind("<<ComboboxSelected>>", handle_style_select)
+
 label_input = tk.Label(text="Paste code here")
-text_input = tk.Text()
+text_input = tk.Text(height=12, wrap='word')
 
 # TODO: style selection widgets
 button_convert = tk.Button(text="Convert", command=convert)
 label_output = tk.Label(text="Generated html")
-text_output = tk.Text()
+text_output = tk.Text(height=12, wrap='word')
 # TODO: button to copy output to clipboard
 
 def run_tkinter_window():
 	# Create the window
-	label_language.pack()
-	button_python.pack(side=tk.LEFT)
-	button_csharp.pack(side=tk.LEFT)
-	label_selected_language.pack(side=tk.RIGHT)
+	label_language.pack(side=tk.LEFT)
+	dropdown_language.pack(side=tk.RIGHT)
 	frame_language.pack()
 
-	button_style_light.pack(side=tk.LEFT)
-	button_style_dark.pack(side=tk.LEFT)
-	label_selected_style.pack(side=tk.RIGHT)
+	label_style.pack(side=tk.LEFT)
+	dropdown_style.pack(side=tk.RIGHT)
 	frame_style.pack()
 
 	label_input.pack()

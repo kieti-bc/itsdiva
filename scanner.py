@@ -13,8 +13,12 @@ class Scanner:
 
 	def get_tokens(self):
 		while(self.isAtEnd() == False):
-			self.start = self.current
-			self.scan_token()
+			try:
+				self.start = self.current
+				self.scan_token()
+			except BaseException:
+				# TODO error reporting
+				pass
 		return self.tokens
 
 	def isAtEnd(self):
