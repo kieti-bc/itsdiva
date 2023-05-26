@@ -27,7 +27,7 @@ class Parser:
 		self.user_types = user_types
 
 	def create_span(self, color, text):
-		span = "<span style=\"color:{color};>{text}</span>".format(color=color, text=text)
+		span = "<span style=\"color:{color};\">{text}</span>".format(color=color, text=text)
 		return span
 
 	def create_div(self):
