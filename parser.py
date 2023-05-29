@@ -51,13 +51,9 @@ background-color:{bg};\">
 		return tokens
 
 	def convert_token_text(self, token) -> str:
-		if token.type == TokenType.COMMENT or \
-			token.type == TokenType.DOC_COMMENT or \
-			token.type == TokenType.OPERATOR or \
-			token.type == TokenType.CONSTANT:
 			token.text = token.text.replace('&', "&amp;")
-			token.text = token.text.replace('<', "&gt;")
-			token.text = token.text.replace('>', "&lt;")
+			token.text = token.text.replace('<', "&lt;")
+			token.text = token.text.replace('>', "&gt;")
 			if token.text.startswith("\"") or token.text.startswith('\''):
 				token.text = token.text.replace('\"', "&quot;")
 				token.text = token.text.replace('\'', "&apos;")
@@ -67,9 +63,6 @@ background-color:{bg};\">
 		tokens = self.tokenize_line(line, language, user_types)
 		# Iterate tokens
 		line = ""
-
-
-
 		for t in tokens:
 			# create spans
 			# concatenate

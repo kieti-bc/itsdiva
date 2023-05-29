@@ -123,10 +123,6 @@ class Scanner:
 			return
 
 		match c:
-			case '(':
-				self.add_token(TokenType.LEFT_PAREN)
-			case ')':
-				self.add_token(TokenType.RIGHT_PAREN)
 			case '/':
 				if self.next_is('/'):
 					t_type = TokenType.COMMENT
@@ -140,12 +136,13 @@ class Scanner:
 				else:
 					self.add_token(TokenType.OPERATOR)
 			case '+'|'-'|'*'|'%'|'/':
+				if self.next_is('='):
+					pass
 				self.add_token(TokenType.OPERATOR)
 			case '!':
 				if self.next_is('='):
-					self.add_token(TokenType.OPERATOR)
-				else:
-					self.add_token(TokenType.OPERATOR)
+					pass
+				self.add_token(TokenType.OPERATOR)
 			case '=':
 				if self.next_is('='):
 					self.add_token(TokenType.OPERATOR)

@@ -9,9 +9,9 @@ class Language_Csharp:
 	def scan_token(self, character, scanner):
 		match character:
 			case '/':
-				if scanner.next_is('/'):
+				if scanner.next_is(character):
 					t_type = TokenType.COMMENT
-					if scanner.next_is('/'):
+					if scanner.next_is(character):
 						t_type = TokenType.DOC_COMMENT
 
 					while scanner.peek() != '' and scanner.isAtEnd() == False:
@@ -22,7 +22,7 @@ class Language_Csharp:
 
 		return False
 
-	name = "csharp"
+	name = "C#"
 
 	keywords = [
 	"abstract",

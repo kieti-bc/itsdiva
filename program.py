@@ -12,10 +12,27 @@ import glob
 
 from languages.language_csharp import Language_Csharp
 from languages.language_python import Language_Python
+from languages.language_javascript import Language_Javascript
+from languages.language_html import Language_Html
 from parser import Parser
 
-python = Language_Python()
-csharp = Language_Csharp()
+# Try to load pyclip, which gives the ability to copy
+# output directly to windows clipboard.
+
+pyclip_available = False
+
+try:
+	import pyclip
+	pyclip_available = True
+except (ImportError):
+	pass
+
+languages = [
+	Language_Python(),
+	Language_Csharp(),
+	Language_Javascript(),
+	Language_Html()
+	]
 
 
 def handle_language_select(event):
@@ -25,11 +42,9 @@ def handle_style_select(event):
 	dropdown_style.select_clear()
 
 def get_language(name):
-	match name:
-		case python.name:
-			return python
-		case csharp.name:
-			return csharp
+	for language in languages:
+		if language.name == name:
+			return language
 
 def get_style(name):
 	for style in styles:
@@ -49,8 +64,15 @@ def convert():
 	parser = Parser(code_lines, style, language, user_types)
 	html_lines = parser.create_html()
 
-	for line in html_lines:
-		text_output.insert(tk.END, line)
+	if pyclip_available:
+		full_output = ""
+		for line in html_lines:
+			full_output += line
+		pyclip.copy(full_output)
+		label_pyclip["text"] = "Copied to clipboard"
+	else:
+		for line in html_lines:
+			text_output.insert(tk.END, line)
 
 
 def read_style_json(filename) -> dict:
@@ -73,18 +95,24 @@ styles = read_style_files()
 
 # Widgets
 window = tk.Tk()
+window.title("ItsDiva")
 frame_language = tk.Frame(master=window)
 
 label_language = tk.Label(text="Choose language", master=frame_language)
 
 dropdown_language = ttk.Combobox(master=frame_language)
-dropdown_language["values"] = (csharp.name, python.name)
-dropdown_language.set(csharp.name)
+language_names = []
+for l in languages:
+	language_names.append(l.name)
+
+dropdown_language["values"] = language_names
+dropdown_language.set(language_names[0])
 dropdown_language.state(["readonly"])
 dropdown_language.bind("<<ComboboxSelected>>", handle_language_select)
 
 frame_style = tk.Frame(master=window)
 label_style = tk.Label(text="Choose style", master=frame_style)
+button_style = tk.Button(text="Reload styles", master=frame_style)
 dropdown_style = ttk.Combobox(master=frame_style)
 
 # Read styles from styles/ folder
@@ -101,10 +129,18 @@ label_input = tk.Label(text="Paste code here")
 text_input = tk.Text(height=12, wrap='word')
 
 # TODO: style selection widgets
-button_convert = tk.Button(text="Convert", command=convert)
+button_convert = tk.Button(text="Convert", command=convert, background="Coral")
 label_output = tk.Label(text="Generated html")
 text_output = tk.Text(height=12, wrap='word')
+
+
+label_pyclip = tk.Label(text="Install module pyclip to be able to copy directly to clipboard")
+
 # TODO: button to copy output to clipboard
+if pyclip_available:
+	text_input["height"] = 24
+	button_convert["text"] = "Convert and copy to clipboard"
+	label_pyclip["text"] = ""
 
 def run_tkinter_window():
 	# Create the window
@@ -113,13 +149,18 @@ def run_tkinter_window():
 	frame_language.pack()
 
 	label_style.pack(side=tk.LEFT)
-	dropdown_style.pack(side=tk.RIGHT)
+	dropdown_style.pack(side=tk.LEFT)
+	button_style.pack(side=tk.RIGHT)
 	frame_style.pack()
 
 	label_input.pack()
 	text_input.pack()
 	button_convert.pack()
-	label_output.pack()
-	text_output.pack()
+
+	if pyclip_available == False:
+		label_output.pack()
+		text_output.pack()
+
+	label_pyclip.pack()
 
 	window.mainloop()

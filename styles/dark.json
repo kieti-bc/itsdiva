@@ -1,13 +1,13 @@
 {
 	"name": "Dark",
-	"bg": "DarkSlateGrey",
+	"bg": "Black",
 	"fg": "GhostWhite",
-	"kw": "CornflowerBlue",
+	"kw": "SkyBlue",
 	"ct": "LightCoral",
 	"ut": "Violet",
 	"pt": "Plum",
 	"cc": "SpringGreen",
 	"dc": "LightGreen",
-	"op": "LightCyan",
+	"op": "PaleGreen",
 	"fc": "Gold"
 }

@@ -31,7 +31,7 @@ class Language_Python:
 
 		return False
 
-	name = "python"
+	name = "Python"
 
 	keywords = [
 	"and",
