@@ -1,13 +1,15 @@
 {
 	"name": "Dark",
-	"bg": "Black",
-	"fg": "GhostWhite",
-	"kw": "SkyBlue",
-	"ct": "LightCoral",
-	"ut": "Violet",
-	"pt": "Plum",
-	"cc": "SpringGreen",
-	"dc": "LightGreen",
-	"op": "PaleGreen",
-	"fc": "Gold"
+	"background": "Black",
+	"foreground": "GhostWhite",
+	"line_number_bg": "DarkSlateGrey",
+	"line_number_fg": "WhiteSmoke",
+	"keyword": "SkyBlue",
+	"constant": "LightCoral",
+	"user_type": "Violet",
+	"primitive_type": "Plum",
+	"comment": "SpringGreen",
+	"doc_comment": "LightGreen",
+	"operator": "PaleGreen",
+	"function": "Gold"
 }

@@ -8,7 +8,7 @@ class Language_Html:
 				break
 			scanner.advance()
 
-		scanner.add_token(TokenType.KEYWORD)
+		scanner.add_token(TokenType.FUNCTION)
 
 	def scan_token(self, character, scanner):
 		match character:

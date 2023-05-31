@@ -16,9 +16,8 @@ class Scanner:
 			try:
 				self.start = self.current
 				self.scan_token()
-			except BaseException:
-				# TODO error reporting
-				pass
+			except BaseException as ex:
+				print(ex)	
 		return self.tokens
 
 	def isAtEnd(self):

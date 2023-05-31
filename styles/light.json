@@ -1,13 +1,15 @@
 {
 	"name": "Light",
-	"bg": "Snow",
-	"fg": "Black",
-	"kw": "DarkBlue",
-	"ct": "Crimson",
-	"ut": "DarkMagenta",
-	"pt": "DarkOrchid",
-	"cc": "DarkGreen",
-	"dc": "DarkSeaGreen",
-	"op": "MediumBlue",
-	"fc": "DarkOrange"
+	"background": "Snow",
+	"foreground": "Black",
+	"line_number_bg": "LightGrey",
+	"line_number_fg": "DarkSlateGrey",
+	"keyword": "DarkBlue",
+	"constant": "Crimson",
+	"user_type": "DarkMagenta",
+	"primitive_type": "DarkOrchid",
+	"comment": "DarkGreen",
+	"doc_comment": "DarkSeaGreen",
+	"operator": "MediumBlue",
+	"function": "DarkOrange"
 }
