@@ -38,7 +38,7 @@ class Scanner:
 			self.add_token(TokenType.TEXT)
 		else:
 			self.advance() # Found terminating "
-			self.add_token(type=TokenType.CONSTANT)
+			self.add_token(type=TokenType.STRING)
 
 	def add_number_token(self):
 		while self.peek().isdigit():
@@ -50,7 +50,7 @@ class Scanner:
 		while self.peek().isdigit():
 			self.advance()
 
-		self.add_token(type=TokenType.CONSTANT)
+		self.add_token(type=TokenType.NUMBER)
 
 	# Possible choices
 	# variable name -> TEXT

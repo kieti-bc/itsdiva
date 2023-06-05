@@ -2,7 +2,8 @@ from enum import Enum, auto
 
 class TokenType(Enum):
 	KEYWORD = "keyword"
-	CONSTANT = "constant"
+	NUMBER = "number"
+	STRING = "string"
 	USER_TYPE = "user_type"
 	PRIMITIVE_TYPE = "primitive_type"
 	COMMENT = "comment"
