@@ -22,6 +22,16 @@ class Language_Csharp:
 
 		return False
 
+
+	def is_user_type_keyword(self, word:str):
+		return word in Language_Csharp.user_type_keywords
+
+	user_type_keywords = [
+		"class",
+		"struct",
+		"enum"
+	]
+
 	name = "C#"
 
 	keywords = [

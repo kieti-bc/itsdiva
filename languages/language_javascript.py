@@ -32,6 +32,13 @@ class Language_Javascript:
 				return True
 		return False
 
+	def is_user_type_keyword(self, word:str):
+		return word in Language_Javascript.user_type_keywords
+
+	user_type_keywords = [
+		"class"
+	]
+
 	name = "Javascript"
 
 	keywords = [

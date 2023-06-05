@@ -37,6 +37,11 @@ class Language_Html:
 						
 		return False
 
+	def is_user_type_keyword(self, word:str):
+		return False
+
+	user_type_keywords = []
+
 	name = "Html"
 
 	keywords = [

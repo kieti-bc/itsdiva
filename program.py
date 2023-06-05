@@ -14,7 +14,7 @@ from languages.language_csharp import Language_Csharp
 from languages.language_python import Language_Python
 from languages.language_javascript import Language_Javascript
 from languages.language_html import Language_Html
-from parser import Parser
+from diva_parser import Parser
 
 # Try to load pyclip, which gives the ability to copy
 # output directly to windows clipboard.

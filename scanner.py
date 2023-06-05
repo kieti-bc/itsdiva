@@ -67,7 +67,7 @@ class Scanner:
 		if len(self.tokens) >= 2:
 			prev_white = self.tokens[-1].type == TokenType.WHITESPACE
 			prev_class = self.tokens[-2].type == TokenType.KEYWORD and \
-			self.tokens[-2].text == "class"
+			self.language.is_user_type_keyword(self.tokens[-2].text)
 
 			if prev_class and prev_white:
 				self.user_types.append(token_text)

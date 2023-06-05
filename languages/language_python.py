@@ -31,6 +31,14 @@ class Language_Python:
 
 		return False
 
+	def is_user_type_keyword(self, word:str):
+		return word in Language_Python.user_type_keywords
+
+	user_type_keywords = [
+		"class",
+		"import"
+	]
+
 	name = "Python"
 
 	keywords = [
@@ -64,6 +72,7 @@ class Language_Python:
 	"pass",
 	"raise",
 	"return",
+	"self",
 	"True",
 	"try",
 	"while",
