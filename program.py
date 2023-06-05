@@ -184,7 +184,7 @@ class ItsDivaGUI:
 
 		text_size = 1.0
 		try:
-			text_size = double(self.text_size.get())
+			text_size = float(self.text_size.get())
 		except ValueError:
 			pass
 
@@ -213,10 +213,14 @@ class ItsDivaGUI:
 
 	def read_style_files(self):
 		self.styles = []
-		os.chdir('styles')
-		style_files = glob.glob("*.json")
-		for f in style_files:
-			self.styles.append(self.read_style_json(f))
+		try:
+			os.chdir('styles')
+			style_files = glob.glob("*.json")
+			for f in style_files:
+				self.styles.append(self.read_style_json(f))
+			os.chdir('..')
+		except FileNotFoundError:
+			pass
 
 def run_tkinter_window():
 	# Create the window
