@@ -57,7 +57,7 @@ class Scanner:
 	# keyword -> KEYWORD
 	# text( -> FUNCTION
 	def add_identifier_token(self):
-		while self.peek().isalnum():
+		while self.peek().isalnum() or self.peek() == '_':
 			self.advance()
 
 		token_text = self.source[self.start: self.current]
