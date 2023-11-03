@@ -1,15 +1,23 @@
 
 from token_types import Token
 from token_types import TokenType
+from scanner_states import ScannerState
 
 class Scanner:
-	def __init__(self, line, language, user_types):
+	def __init__(self, state, line, language, user_types):
+		self.state = state
 		self.source = line
 		self.start = 0
 		self.current = 0
 		self.tokens = []
 		self.language = language
 		self.user_types = user_types
+
+	def get_state(self):
+		return self.state
+
+	def set_state(self, new_state):
+		self.state = new_state
 
 	def get_tokens(self):
 		while(self.isAtEnd() == False):
@@ -25,7 +33,12 @@ class Scanner:
 
 	def add_token(self, type):
 		token_text = self.source[self.start:self.current]
-		self.tokens.append(Token(type, token_text))
+		# Notice if type is same as the previous type
+		# if the type is same, extend the previous token
+		if len(self.tokens) > 0 and type == self.tokens[-1].type:
+			self.tokens[-1].text += token_text
+		else:
+			self.tokens.append(Token(type, token_text))
 
 	# Can be double or single quotes
 	def add_string_token(self, quote):
@@ -121,12 +134,17 @@ class Scanner:
 		if found_language_token == True:
 			return
 
+		# If reading a multi line comment, then everything
+		# is a comment until language notices that the multi line
+		# comment has ended
+		if self.state == ScannerState.MULTI_LINE_COMMENT:
+			self.add_token(TokenType.COMMENT)
+			return
+
 		match c:
 			case '/':
 				if self.next_is('/'):
 					t_type = TokenType.COMMENT
-					if self.next_is('/'):
-						t_type = TokenType.DOC_COMMENT
 
 					while self.peek() != '' and self.isAtEnd() == False:
 						self.advance()

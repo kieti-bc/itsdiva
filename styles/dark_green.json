@@ -1,0 +1,16 @@
+{
+	"name": "Dark Green",
+	"background": "DarkSlateGrey",
+	"foreground": "GhostWhite",
+	"line_number_bg": "DarkSlateGrey",
+	"line_number_fg": "WhiteSmoke",
+	"keyword": "SpringGreen",
+	"number": "HoneyDew",
+	"string": "LightPink",
+	"user_type": "Violet",
+	"primitive_type": "Plum",
+	"comment": "MediumTurquoise",
+	"doc_comment": "MediumAquaMarine",
+	"operator": "LightCyan",
+	"function": "GreenYellow"
+}

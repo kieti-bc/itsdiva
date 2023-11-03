@@ -1,0 +1,16 @@
+{
+	"name": "Borland Blue",
+	"background": "#000060",
+	"foreground": "GhostWhite",
+	"line_number_bg": "DarkSlateGrey",
+	"line_number_fg": "WhiteSmoke",
+	"keyword": "Orange",
+	"number": "Yellow",
+	"string": "Plum",
+	"user_type": "DeepPink",
+	"primitive_type": "#FFFF00",
+	"comment": "#80A0FF",
+	"doc_comment": "80A0FF",
+	"operator": "SpringGreen",
+	"function": "LightCoral"
+}

@@ -1,5 +1,6 @@
 
 from token_types import TokenType
+from scanner_states import ScannerState
 
 class Language_Csharp:
 
@@ -19,6 +20,23 @@ class Language_Csharp:
 
 					scanner.add_token(t_type)
 					return True
+				elif scanner.next_is('*'):
+					t_type = TokenType.COMMENT
+					scanner.set_state(ScannerState.MULTI_LINE_COMMENT)
+
+					# Read the rest of the line as comment
+					while scanner.peek() != '' and scanner.isAtEnd() == False:
+						scanner.advance()
+
+					scanner.add_token(t_type)
+					return True
+			case '*':
+				if scanner.get_state() == ScannerState.MULTI_LINE_COMMENT:
+					if scanner.next_is('/'):
+						t_type = TokenType.COMMENT
+						scanner.set_state(ScannerState.DEFAULT)
+						scanner.add_token(t_type)
+						return True
 
 		return False
 

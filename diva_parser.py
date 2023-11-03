@@ -1,6 +1,7 @@
 
 from scanner import Scanner
 from token_types import Token, TokenType
+from scanner_states import ScannerState
 
 # HTML constants
 nbsp = "&nbsp;"
@@ -19,7 +20,6 @@ class Line_numbering:
 
 class Parser:
 
-
 	def __init__(self, source_lines, style:dict, language, user_types, enable_line_numbers, starting_line_number:int, text_size):
 		self.code_lines = source_lines
 		self.style = style
@@ -27,6 +27,7 @@ class Parser:
 		self.user_types = user_types
 		self.tab_width = 4
 		self.font_size = text_size
+		self.scanner_state = ScannerState.DEFAULT
 
 		line_numbering_width = len(str(len(self.code_lines)))
 		self.line_numbering = Line_numbering(enable_line_numbers, starting_line_number, line_numbering_width)
@@ -62,8 +63,9 @@ background-color:{bg};\">
 		return div
 
 	def tokenize_line(self, line, language, user_types):
-		s = Scanner(line, language, user_types)
-		tokens = s.get_tokens()
+		s = Scanner(self.scanner_state, line, language, user_types)
+		tokens = s.get_tokens() # state of scanner changes when reading tokens
+		self.scanner_state = s.get_state()
 		return tokens
 
 	def convert_token_text(self, token) -> str:
