@@ -91,10 +91,14 @@ background-color:{bg};\">
 			# Change some characters to html 
 			match t.type:
 				case TokenType.TAB:
-					for i in range(self.tab_width):
-						line += nbsp
+					for tab in t.text:
+						if tab == '\t':
+							for i in range(self.tab_width):
+								line += nbsp
 				case TokenType.WHITESPACE:
-					line += nbsp
+					for space in t.text:
+						if space == ' ':
+							line += nbsp
 				case TokenType.TEXT:
 					line += t.text
 				case _:
