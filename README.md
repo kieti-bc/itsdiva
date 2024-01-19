@@ -18,6 +18,7 @@ python itsdiva.py
 * Paina ItsLearning muotoiluvalikosta **Koodi** nappia
 * Liitä luotu hmtl haluaamaasi kohtaan painamalla **Ctrl + V**
 
+Jos asennat python kirjaston pyclip, tulee kopioinnista helpompaa.
 
 ## Uusien tyylien luominen
 Lisää styles/ kansioon uusi .json tiedosto, jonka sisältö on muotoa
@@ -29,14 +30,19 @@ Lisää styles/ kansioon uusi .json tiedosto, jonka sisältö on muotoa
 ```
 
 Tunnisteita ovat:
-* **bg**: tekstin taustaväri
-* **fg**: tekstin väri
-* **kw**: keyword, eli kielen varatut sanat
-* **ct**: constant, eli merkkijonot ja numerot
-* **ut**: user type, eli koodissa olevat luokat ja rykelmät (struct)
-* **pt**: primitive type, eli alkeistyypit, esim. int, float
-* **cc**: comment, eli kommentit
-* **dc**: dokumentaatiokommentit
-* **fc**: funktioiden nimet
+* **background**: tekstin taustaväri
+* **foreground**: tekstin väri
+* **line_number_bg**: rivinumeroiden taustaväri
+* **line_number_fg**: rivinumeroiden väri
+* **keyword**: keyword, eli kielen varatut sanat
+* **number**: numerot
+* **string**: merkkijonot, eli "" välissä olevat merkit
+* **user_type**: user type, eli koodissa olevat luokat ja rakenteet(struct)
+* **primitive_type**: primitive type, eli alkeistyypit, esim. int, float
+* **operator**: operaattorit eli +, - , * jne.
+* **comment**: comment, eli kommentit
+* **doc_comment**: dokumentaatiokommentit
+* **function**: funktioiden nimet
 
 Värit voi antaa niminä tai muissa [tuetuissa muodoissa](https://www.w3schools.com/colors/default.asp)
+
