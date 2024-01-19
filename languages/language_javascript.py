@@ -1,9 +1,11 @@
 from token_types import TokenType
+from scanner_states import ScannerState
 
 class Language_Javascript:
 
 	def scan_token(self, character, scanner):
 		match character:
+			# Operators in javascript
 			case '+':
 				if scanner.next_is(character):
 					pass
@@ -30,6 +32,36 @@ class Language_Javascript:
 			case '?':
 				scanner.add_token(TokenType.OPERATOR)
 				return True
+
+			# Multi line comment
+			case '/':
+				if scanner.next_is(character):
+					t_type = TokenType.COMMENT
+					if scanner.next_is(character):
+						t_type = TokenType.DOC_COMMENT
+
+					while scanner.peek() != '' and scanner.isAtEnd() == False:
+						scanner.advance()
+
+					scanner.add_token(t_type)
+					return True
+				elif scanner.next_is('*'):
+					t_type = TokenType.COMMENT
+					scanner.set_state(ScannerState.MULTI_LINE_COMMENT)
+
+					# Read the rest of the line as comment
+					while scanner.peek() != '' and scanner.isAtEnd() == False:
+						scanner.advance()
+
+					scanner.add_token(t_type)
+					return True
+			case '*':
+				if scanner.get_state() == ScannerState.MULTI_LINE_COMMENT:
+					if scanner.next_is('/'):
+						t_type = TokenType.COMMENT
+						scanner.set_state(ScannerState.DEFAULT)
+						scanner.add_token(t_type)
+						return True
 		return False
 
 	def is_user_type_keyword(self, word:str):
@@ -52,7 +84,6 @@ class Language_Javascript:
 		"catch",
 		"char",
 		"class",	
-		"const",
 		"continue",
 		"debugger",
 		"default",
@@ -78,8 +109,8 @@ class Language_Javascript:
 		"instanceof",
 		"int",
 		"interface",
-		"let",
 		"long",	
+		"NaN",
 		"native",	
 		"new",
 		"null",	
@@ -100,7 +131,6 @@ class Language_Javascript:
 		"true",
 		"try",
 		"typeof",
-		"var",
 		"void",
 		"volatile",
 		"while",
@@ -118,4 +148,7 @@ class Language_Javascript:
 		"Symbol",
 		"Date",
 		"Error",
+		"const",
+		"let",
+		"var",
 	]

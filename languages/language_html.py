@@ -1,20 +1,17 @@
 from token_types import TokenType
+from scanner_states import ScannerState
 
 class Language_Html:
 
-	def add_tag(scanner):
-		while scanner.peek().isalpha() and scanner.isAtEnd() == False:
-			if scanner.next_is('>'):
-				break
-			scanner.advance()
-
-		scanner.add_token(TokenType.FUNCTION)
-
+	# In html the tags can contain attributes, which can have strings as their values
+	# Reserverd words are only reserved words if they are inside < > 
+	# <p> html </p>  p is a reserved word, but html is not, because it is not inside brackets
 	def scan_token(self, character, scanner):
 		match character:
 			case '<':
-				if scanner.peek().isalpha() or scanner.peek() == '/':
-					Language_Html.add_tag(scanner)
+				if scanner.next_is('/'):
+					scanner.add_token(TokenType.FUNCTION)
+					scanner.set_state(ScannerState.HTML_TAG)
 					return True
 				if scanner.next_is('!'):
 					# Comment or doctype
@@ -29,6 +26,8 @@ class Language_Html:
 							scanner.add_token(TokenType.COMMENT)
 							return True
 					elif scanner.peek() == 'D': # DOCTYPE?
+						# Read until space
+						# mark next word as keyword
 						scanner.add_identifier_token()
 						return True
 			case '>':
