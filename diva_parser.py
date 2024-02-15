@@ -100,6 +100,7 @@ background-color:{bg};\">
 						if space == ' ':
 							line += nbsp
 				case TokenType.TEXT:
+					self.convert_token_text(t)
 					line += t.text
 				case _:
 					self.convert_token_text(t)

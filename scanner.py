@@ -76,7 +76,7 @@ class Scanner:
 		token_text = self.source[self.start: self.current]
 
 		# Could this be a new user type?
-		# Is this preceded by WHITESPACE and KEYWORD "Class"?
+		# Is this preceded by WHITESPACE and language specific user type keyword eg. "Class"?
 		if len(self.tokens) >= 2:
 			prev_white = self.tokens[-1].type == TokenType.WHITESPACE
 			prev_class = self.tokens[-2].type == TokenType.KEYWORD and \
@@ -91,11 +91,14 @@ class Scanner:
 			self.add_token(type=TokenType.PRIMITIVE_TYPE)
 		elif token_text in self.user_types:
 			self.add_token(type=TokenType.USER_TYPE)
+		elif token_text in self.language.user_type_keywords:
+			self.add_token(type=TokenType.USER_TYPE)
 		elif self.peek() == "(":
 			self.add_token(type=TokenType.FUNCTION)
 		else:
 			self.add_token(type=TokenType.TEXT)
 
+	# Advance to the next character
 	def advance(self):
 		c = self.source[self.current]
 		self.current += 1

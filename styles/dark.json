@@ -1,6 +1,6 @@
 {
 	"name": "Dark",
-	"background": "Black",
+	"background": "#302D3F",
 	"foreground": "GhostWhite",
 	"line_number_bg": "DarkSlateGrey",
 	"line_number_fg": "WhiteSmoke",

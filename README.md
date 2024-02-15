@@ -24,7 +24,7 @@ Jos asennat python kirjaston pyclip, tulee kopioinnista helpompaa.
 Lisää styles/ kansioon uusi .json tiedosto, jonka sisältö on muotoa
 ```json
 {
-	"name": "tyylin nimi>",
+	"name": "tyylin nimi",
 	"tunniste": "html-väri"
 }
 ```
