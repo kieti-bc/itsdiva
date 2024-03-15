@@ -2,6 +2,7 @@
 from scanner import Scanner
 from token_types import Token, TokenType
 from scanner_states import ScannerState
+from text_styler import TextStyler
 
 # HTML constants
 nbsp = "&nbsp;"
@@ -76,9 +77,12 @@ background-color:{bg};\">
 				token.text = token.text.replace('\"', "&quot;")
 				token.text = token.text.replace('\'', "&apos;")
 
+	def convert_line_to_tokens(self, line:str) -> list:
+		return self.tokenize_line(line, self.language, self.user_types)
+
 	def convert_to_html(self, line:str):
 		# Tokenize
-		tokens = self.tokenize_line(line, self.language, self.user_types)
+		tokens = self.convert_line_to_tokens(line)
 		# Iterate tokens
 		line = ""
 		# Create line numbers?
@@ -125,3 +129,16 @@ background-color:{bg};\">
 
 		html_lines.append("</div>")
 		return html_lines
+
+	def print_to_text_widget(self, styler:object, text_widget:object) -> object:
+		# parses text and inserts it into a Python tkinter text widget
+		for line in self.code_lines:
+			tokens = []
+			try:
+				tokens = self.convert_line_to_tokens(line)
+			except BaseException as ex:
+				print(ex)
+
+			for t in tokens:
+				styler.insert_stylized_text(text_widget, self.style, t)
+			styler.insert_new_line(text_widget)

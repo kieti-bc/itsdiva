@@ -15,6 +15,7 @@ from languages.language_python import Language_Python
 from languages.language_javascript import Language_Javascript
 from languages.language_html import Language_Html
 from diva_parser import Parser
+from text_styler import TextStyler
 
 # Try to load pyclip, which gives the ability to copy
 # output directly to windows clipboard.
@@ -81,7 +82,7 @@ class ItsDivaGUI:
 		self.use_line_numbers = tk.BooleanVar(value=True)
 		self.first_line_number = tk.StringVar(value="1")
 		frame_line_numbers = tk.Frame(master=frame_right_side)
-		check_line_numbers = ttk.Checkbutton(master=frame_line_numbers, text="Line numbers", onvalue=True, offvalue=False, variable=self.use_line_numbers)
+		check_line_numbers = ttk.Checkbutton(master=frame_line_numbers, text="Line numbers", onvalue=False, offvalue=False, variable=self.use_line_numbers)
 		label_first_line = tk.Label(master=frame_line_numbers, text="Start from:")
 		entry_first_line = tk.Entry(master=frame_line_numbers, textvariable=self.first_line_number)
 
@@ -174,6 +175,8 @@ class ItsDivaGUI:
 
 		language = self.get_language()
 		style = self.get_style()
+		
+
 
 		first_line_number = 1
 		try:
@@ -191,6 +194,12 @@ class ItsDivaGUI:
 
 		parser = Parser(code_lines, style, language, user_types, self.use_line_numbers.get(), first_line_number, text_size)
 		html_lines = parser.create_html()
+
+		# Apply style to text area
+		styler = TextStyler()
+		styler.apply_style_to_text(self.text_input, style)
+		self.text_input.delete("1.0", tk.END)
+		parser.print_to_text_widget(styler, self.text_input)
 
 		if pyclip_available:
 			full_output = ""
