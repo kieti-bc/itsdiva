@@ -79,10 +79,10 @@ class ItsDivaGUI:
 
 
 		# Line numbers
-		self.use_line_numbers = tk.BooleanVar(value=True)
+		self.use_line_numbers = tk.BooleanVar(value=False)
 		self.first_line_number = tk.StringVar(value="1")
 		frame_line_numbers = tk.Frame(master=frame_right_side)
-		check_line_numbers = ttk.Checkbutton(master=frame_line_numbers, text="Line numbers", onvalue=False, offvalue=False, variable=self.use_line_numbers)
+		check_line_numbers = ttk.Checkbutton(master=frame_line_numbers, text="Line numbers", onvalue=True, offvalue=False, variable=self.use_line_numbers)
 		label_first_line = tk.Label(master=frame_line_numbers, text="Start from:")
 		entry_first_line = tk.Entry(master=frame_line_numbers, textvariable=self.first_line_number)
 
