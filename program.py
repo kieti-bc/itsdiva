@@ -15,7 +15,7 @@ from languages.language_python import Language_Python
 from languages.language_javascript import Language_Javascript
 from languages.language_html import Language_Html
 from diva_parser import Parser
-from text_styler import TextStyler
+from text_styler import TextStyler, get_default_font
 
 # Try to load pyclip, which gives the ability to copy
 # output directly to windows clipboard.
@@ -95,6 +95,7 @@ class ItsDivaGUI:
 		# Input text area
 		label_input = tk.Label(master=frame_bottom, text="Paste code here")
 		self.text_input = tk.Text(master=frame_bottom, height=12, wrap='word')
+		self.text_input["font"] = get_default_font()
 
 		button_convert = tk.Button(master=frame_bottom, text="Convert", command=self.convert, background="Coral")
 		label_output = tk.Label(master=frame_bottom, text="Generated html")
@@ -198,6 +199,7 @@ class ItsDivaGUI:
 		# Apply style to text area
 		styler = TextStyler()
 		styler.apply_style_to_text(self.text_input, style)
+		styler.apply_text_size(self.text_input, text_size)
 		self.text_input.delete("1.0", tk.END)
 		parser.print_to_text_widget(styler, self.text_input)
 

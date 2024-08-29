@@ -1,0 +1,16 @@
+{
+	"name": "AYY4",
+	"background": "#00303b",
+	"foreground": "#f1f2da",
+	"line_number_bg": "#00303b",
+	"line_number_fg": "#ffce96",
+	"keyword": "#ff7777",
+	"number": "#ffce96",
+	"string": "#ffce96",
+	"user_type": "#ff7777",
+	"primitive_type": "#ff7777",
+	"comment": "#ffce96",
+	"doc_comment": "#ffce96",
+	"operator": "#ff7777",
+	"function": "#ffce96"
+}

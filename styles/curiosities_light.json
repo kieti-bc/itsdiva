@@ -1,0 +1,16 @@
+{
+	"name": "Curiosities Light",
+	"background": "#ffeecc",
+	"foreground": "#46425e",
+	"line_number_bg": "#15788c",
+	"line_number_fg": "#00b9be",
+	"keyword": "#ff6973",
+	"number": "#15788c",
+	"string": "#00b9be",
+	"user_type": "#ffb0a3",
+	"primitive_type": "#ffb0a3",
+	"comment": "#15788c",
+	"doc_comment": "#15788c",
+	"operator": "#46425e",
+	"function": "#00b9be"
+}

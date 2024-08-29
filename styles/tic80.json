@@ -1,0 +1,16 @@
+{
+	"name": "TIC-80",
+	"background": "#333c57",
+	"foreground": "#f4f4f4",
+	"line_number_bg": "#566c86",
+	"line_number_fg": "#94b0c2",
+	"keyword": "#ef7d57",
+	"number": "#73eff7",
+	"string": "#ffcd75",
+	"user_type": "#41a6f6",
+	"primitive_type": "#41a6f6",
+	"comment": "#94b0c2",
+	"doc_comment": "#94b0c2",
+	"operator": "#94b0c2",
+	"function": "#a7f070"
+}

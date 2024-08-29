@@ -2,9 +2,13 @@
 
 import tkinter as tk
 from token_types import Token, TokenType
+from tkinter.font import Font
 
 # Way to iterate over enum
 import inspect
+
+def get_default_font():
+	return Font(family="TkFixedFont", size=12)
 
 def iter_enum(enumName, list):
 	for member in enumName:  
@@ -29,6 +33,11 @@ class TextStyler:
 				# NOTE does not take hex values, only names
 				text_widget.tag_configure(tag_name, foreground  = style[tag_name])
 		pass
+
+	def apply_text_size(self, text_widget:object, em_size:float):
+		myFont = get_default_font()
+		myFont["size"] = int(12.0 * em_size)
+		text_widget["font"] = myFont
 
 	# inserts text to widget and applies the correct tag
 	# based on the tokenType

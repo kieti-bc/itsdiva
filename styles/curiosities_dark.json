@@ -1,0 +1,16 @@
+{
+	"name": "Curiosities Dark",
+	"background": "#46425e",
+	"foreground": "#ffeecc",
+	"line_number_bg": "#15788c",
+	"line_number_fg": "#ffeecc",
+	"keyword": "#ff6973",
+	"number": "#ffb0a3",
+	"string": "#ffb0a3",
+	"user_type": "#00b9be",
+	"primitive_type": "#00b9be",
+	"comment": "#a5a8ac",
+	"doc_comment": "#a5a8ac",
+	"operator": "#a5a8ac",
+	"function": "#00b9be"
+}
