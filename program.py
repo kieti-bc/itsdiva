@@ -44,13 +44,11 @@ class ItsDivaGUI:
 
 		# Left and right
 		frame_top = tk.Frame(master=window)
-		frame_left_side = tk.Frame(master=frame_top)
-		frame_right_side = tk.Frame(master=frame_top)
 		frame_bottom = tk.Frame(master=window)
 
-		# Language
+		# Language and Style
 		self.language_name = tk.StringVar(value=language_names[0])
-		frame_language = tk.Frame(master=frame_left_side)
+		frame_language = tk.Frame(master=frame_top)
 		label_language = tk.Label(text="Choose language", master=frame_language)
 		self.dropdown_language = ttk.Combobox(master=frame_language, textvariable=self.language_name)
 		self.dropdown_language["values"] = language_names
@@ -69,28 +67,32 @@ class ItsDivaGUI:
 			initial_style = self.style_names[0]
 
 		self.style_name = tk.StringVar(value=initial_style)
-		frame_style = tk.Frame(master=frame_left_side)
-		label_style = tk.Label(text="Choose style", master=frame_style)
-		button_style = tk.Button(text="Reload styles", master=frame_style, command=self.reload_styles)
-		self.dropdown_style = ttk.Combobox(master=frame_style, textvariable=self.style_name)
+		label_style = tk.Label(text="Choose style", master=frame_language)
+		button_style = tk.Button(text="Reload styles", master=frame_language, command=self.reload_styles)
+		self.dropdown_style = ttk.Combobox(master=frame_language, textvariable=self.style_name)
 		self.dropdown_style["values"] = self.style_names
 		self.dropdown_style.state(["readonly"])
 		self.dropdown_style.bind("<<ComboboxSelected>>", self.handle_style_select)
 
 
-		# Line numbers
+		# Line numbers and text size
 		self.use_line_numbers = tk.BooleanVar(value=False)
 		self.first_line_number = tk.StringVar(value="1")
-		frame_line_numbers = tk.Frame(master=frame_right_side)
+		frame_line_numbers = tk.Frame(master=frame_top)
 		check_line_numbers = ttk.Checkbutton(master=frame_line_numbers, text="Line numbers", onvalue=True, offvalue=False, variable=self.use_line_numbers)
 		label_first_line = tk.Label(master=frame_line_numbers, text="Start from:")
 		entry_first_line = tk.Entry(master=frame_line_numbers, textvariable=self.first_line_number)
 
 		# Other settings
-		frame_misc = tk.Frame(master=frame_right_side)
-		label_text_size = tk.Label(master=frame_misc, text="Text size in em")
+		label_text_size = tk.Label(master=frame_line_numbers, text="Text size in em")
 		self.text_size = tk.StringVar(value="1.0")
-		spinner_text_size = ttk.Spinbox(master=frame_misc, textvariable=self.text_size, from_=1.0, to=3.0, increment=0.1)
+		spinner_text_size = ttk.Spinbox(master=frame_line_numbers, textvariable=self.text_size, from_=1.0, to=3.0, increment=0.1)
+
+		# User types
+		frame_user_types = tk.Frame(master=frame_top)
+		self.user_types = tk.StringVar(value="")
+		label_user_types = tk.Label(master=frame_user_types, text="Space separated list of user types")
+		self.user_types_input = tk.Entry(master=frame_user_types, textvariable=self.user_types);
 
 		# Input text area
 		label_input = tk.Label(master=frame_bottom, text="Paste code here")
@@ -109,26 +111,26 @@ class ItsDivaGUI:
 			self.label_pyclip["text"] = ""
 
 		# Layout
-		label_language.pack(side=tk.LEFT)
-		self.dropdown_language.pack(side=tk.RIGHT)
-		frame_language.pack()
+		label_language.pack(side=tk.LEFT, expand=True)
+		self.dropdown_language.pack(side=tk.LEFT, expand=True)
 
 		label_style.pack(side=tk.LEFT)
 		self.dropdown_style.pack(side=tk.LEFT)
-		button_style.pack(side=tk.RIGHT)
-		frame_style.pack()
+		button_style.pack(side=tk.LEFT)
+		frame_language.pack(expand=True, fill=tk.X)
 
 		check_line_numbers.pack(side=tk.LEFT)
 		label_first_line.pack(side=tk.LEFT)
-		entry_first_line.pack(side=tk.RIGHT)
-		frame_line_numbers.pack()
+		entry_first_line.pack(side=tk.LEFT)
 
 		label_text_size.pack(side=tk.LEFT)
-		spinner_text_size.pack(side=tk.RIGHT)
-		frame_misc.pack()
+		spinner_text_size.pack(side=tk.LEFT)
+		frame_line_numbers.pack(expand=True, fill=tk.X)
 
-		frame_left_side.pack(side=tk.LEFT)
-		frame_right_side.pack(side=tk.RIGHT)
+		label_user_types.pack(side=tk.LEFT)
+		self.user_types_input.pack(side=tk.LEFT, expand=True, fill=tk.X)
+
+		frame_user_types.pack(expand=True, fill=tk.X)
 
 		frame_top.pack()
 
@@ -172,7 +174,11 @@ class ItsDivaGUI:
 		code_lines = code.split("\n")
 		self.text_output.delete("1.0", tk.END)
 
-		user_types = []
+		# Get the user types
+		user_types = self.user_types_input.get().split(' ')
+		# Trim 
+		for utype in user_types:
+			utype = utype.strip()
 
 		language = self.get_language()
 		style = self.get_style()

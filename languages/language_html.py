@@ -12,7 +12,6 @@ class Language_Html:
 			case '<':
 				# Inside <  > 
 				scanner.set_state(ScannerState.DEFAULT)
-				print("Scanner inside html tag")
 				# Tag starts or ends
 				if scanner.next_is('/'):
 					# End tag
@@ -45,7 +44,6 @@ class Language_Html:
 				scanner.add_token(TokenType.FUNCTION)
 				# Tag ends: everything is text until next <
 				scanner.set_state(ScannerState.HTML_TAG)
-				print("Scanner outside html tag")
 				return True
 			# Dont read tabs and whitespace as text even when they are inside html tag
 			case '\t':
@@ -376,3 +374,5 @@ class Language_Html:
 		"p",
 		"ul",
 	]
+
+	builtin_types = []

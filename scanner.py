@@ -89,7 +89,7 @@ class Scanner:
 			self.add_token(type=TokenType.KEYWORD)
 		elif token_text in self.language.primitive_types:
 			self.add_token(type=TokenType.PRIMITIVE_TYPE)
-		elif token_text in self.user_types:
+		elif token_text in self.user_types or token_text in self.language.builtin_types:
 			self.add_token(type=TokenType.USER_TYPE)
 		elif token_text in self.language.user_type_keywords:
 			self.add_token(type=TokenType.USER_TYPE)

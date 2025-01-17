@@ -152,3 +152,5 @@ class Language_Javascript:
 		"let",
 		"var",
 	]
+
+	builtin_types = []

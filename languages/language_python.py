@@ -89,3 +89,5 @@ class Language_Python:
 		"list",
 		"dict",
 	]
+
+	builtin_types = []
