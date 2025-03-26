@@ -21,12 +21,12 @@ class Line_numbering:
 
 class Parser:
 
-	def __init__(self, source_lines, style:dict, language, user_types, enable_line_numbers, starting_line_number:int, text_size):
+	def __init__(self, source_lines, style:dict, language, user_types, enable_line_numbers, starting_line_number:int, text_size:float, tab_width:int):
 		self.code_lines = source_lines
 		self.style = style
 		self.language = language
 		self.user_types = user_types
-		self.tab_width = 4
+		self.tab_width = tab_width
 		self.font_size = text_size
 		self.scanner_state = ScannerState.DEFAULT
 
@@ -54,7 +54,8 @@ border-width:0.1em;\
 border-style:solid;\
 border-color:{border_color};\
 color:{fg};\
-background-color:{bg};\">
+background-color:{bg};\
+padding:10px;\">
 """.format(
 		font_size=str(self.font_size),
 		border_color=self.style["foreground"],

@@ -14,6 +14,7 @@ from languages.language_csharp import Language_Csharp
 from languages.language_python import Language_Python
 from languages.language_javascript import Language_Javascript
 from languages.language_html import Language_Html
+from languages.language_sql import Language_SQL
 from diva_parser import Parser
 from text_styler import TextStyler, get_default_font
 
@@ -36,7 +37,8 @@ class ItsDivaGUI:
 			Language_Python(),
 			Language_Csharp(),
 			Language_Javascript(),
-			Language_Html()
+			Language_Html(),
+			Language_SQL()
 			]
 		language_names = []
 		for l in self.languages:
@@ -75,7 +77,7 @@ class ItsDivaGUI:
 		self.dropdown_style.bind("<<ComboboxSelected>>", self.handle_style_select)
 
 
-		# Line numbers and text size
+		# Line numbers, text size and tab width
 		self.use_line_numbers = tk.BooleanVar(value=False)
 		self.first_line_number = tk.StringVar(value="1")
 		frame_line_numbers = tk.Frame(master=frame_top)
@@ -83,9 +85,13 @@ class ItsDivaGUI:
 		label_first_line = tk.Label(master=frame_line_numbers, text="Start from:")
 		entry_first_line = tk.Entry(master=frame_line_numbers, textvariable=self.first_line_number)
 
+		self.tab_width = tk.IntVar(value = 2)
+		label_tab_width = tk.Label(master= frame_line_numbers, text="Tab width")
+		entry_tab_width = tk.Spinbox(master=frame_line_numbers, textvariable=self.tab_width, from_=1, to=8, increment=1)
+
 		# Other settings
 		label_text_size = tk.Label(master=frame_line_numbers, text="Text size in em")
-		self.text_size = tk.StringVar(value="1.0")
+		self.text_size = tk.DoubleVar(value=1.0)
 		spinner_text_size = ttk.Spinbox(master=frame_line_numbers, textvariable=self.text_size, from_=1.0, to=3.0, increment=0.1)
 
 		# User types
@@ -125,6 +131,9 @@ class ItsDivaGUI:
 
 		label_text_size.pack(side=tk.LEFT)
 		spinner_text_size.pack(side=tk.LEFT)
+
+		label_tab_width.pack(side=tk.LEFT)
+		entry_tab_width.pack(side=tk.LEFT)
 		frame_line_numbers.pack(expand=True, fill=tk.X)
 
 		label_user_types.pack(side=tk.LEFT)
@@ -191,15 +200,27 @@ class ItsDivaGUI:
 			first_line_number = max(0, first)
 		except ValueError:
 			pass
+		except tk.TclError:
+			pass
 
 		text_size = 1.0
 		try:
 			text_size = float(self.text_size.get())
 		except ValueError:
 			pass
+		except tk.TclError:
+			pass
 
+		tab_width_int = 2
+		try:
+			tab_width_int = int(self.tab_width.get())
+		except ValueError:
+			pass
+		except tk.TclError:
+			pass
 
-		parser = Parser(code_lines, style, language, user_types, self.use_line_numbers.get(), first_line_number, text_size)
+		parser = Parser(code_lines, style, language, user_types, self.use_line_numbers.get(), first_line_number, text_size, tab_width_int)
+
 		html_lines = parser.create_html()
 
 		# Apply style to text area

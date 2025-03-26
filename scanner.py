@@ -31,6 +31,10 @@ class Scanner:
 	def isAtEnd(self):
 		return self.current >= len(self.source)
 
+	# Returns the current text that has been scanned
+	def get_current_text(self):
+		return self.source[self.start:self.current]
+
 	def add_token(self, type):
 		token_text = self.source[self.start:self.current]
 		# Notice if type is same as the previous type
@@ -54,14 +58,14 @@ class Scanner:
 			self.add_token(type=TokenType.STRING)
 
 	def add_number_token(self):
-		while self.peek().isdigit():
-			self.advance()
-
-		if self.peek() == "." and self.peek_next().isdigit:
-			self.advance()
-
-		while self.peek().isdigit():
-			self.advance()
+		while (True):
+			p = self.peek()
+			if p.isdigit():
+				self.advance()
+			elif p == "." and self.peek_next().isdigit:
+				self.advance()
+			else:
+				break
 
 		self.add_token(type=TokenType.NUMBER)
 
