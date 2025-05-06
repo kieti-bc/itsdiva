@@ -8,7 +8,17 @@ from tkinter.font import Font
 import inspect
 
 def get_default_font():
-	return Font(family="TkFixedFont", size=12)
+	default = tk.font.nametofont("TkFixedFont")
+	default.config(size = 12)
+	return default
+
+def get_fancy_font(bold: bool, italic: bool):
+	fancy = Font(font="TkFixedFont")
+	if (bold):
+		fancy.config(weight="bold")
+	if (italic):
+		fancy.config(slant="italic")
+	return fancy
 
 def iter_enum(enumName, list):
 	for member in enumName:  
@@ -30,13 +40,37 @@ class TextStyler:
 		for name in classNames:
 			tag_name = name
 			if tag_name in style:
-				# NOTE does not take hex values, only names
-				text_widget.tag_configure(tag_name, foreground  = style[tag_name])
-		pass
+				# Find out if this tag defines only a color or more complex style
+				value = style[tag_name]
+				text_color = "black"
+				bg_color = "white"
+				styledFont = get_default_font()
+				# TkFixedFont
+				# font . weight : bold 
+				# font . slant : italic
+				if type(value) == str:
+					text_color = value	
+					bg_color = style["background"]
+				elif type(value) == dict:
+					text_color = value["color"]
+					if "switch_colors" in value and value["switch_colors"] == "True":
+						bg_color = value["color"]
+						text_color = style["foreground"]
+					else:
+						text_color = value["color"]
+						bg_color = style["background"]
+					
+					bold = "weight" in value and value["weight"] == "bold"
+					slanted = "style" in value and value["style"] == "italic"
+					styledFont = get_fancy_font(bold, slanted)
+				
+				text_widget.tag_configure(tag_name, background = bg_color)
+				text_widget.tag_configure(tag_name, foreground = text_color)
+				text_widget.tag_configure(tag_name, font = styledFont)
 
 	def apply_text_size(self, text_widget:object, em_size:float):
 		myFont = get_default_font()
-		myFont["size"] = int(12.0 * em_size)
+		myFont.config(size = int(12.0 * em_size))
 		text_widget["font"] = myFont
 
 	# inserts text to widget and applies the correct tag

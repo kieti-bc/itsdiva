@@ -1,0 +1,23 @@
+{
+	"name": "Ableton",
+	"background": "#848484",
+	"foreground": "#252525",
+	"line_number_bg": "#00303b",
+	"line_number_fg": "#ffce96",
+	"keyword": {
+		"color": "#ffa374",
+		"switch_colors": "True",
+		"weight": "bold"
+		},
+	"number": "#5cffe8",
+	"string": "#feb902",
+	"user_type": "#02f757",
+	"primitive_type": "#ffee33",
+	"comment": 
+		{ "color":"#edffae",
+		"style":"italic"
+	},
+	"doc_comment": "#edffae",
+	"operator": "#be99ff",
+	"function": "#ff94a6"
+}
