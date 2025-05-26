@@ -9,7 +9,10 @@
 	"string": "#ffce96",
 	"user_type": "#ff7777",
 	"primitive_type": "#ff7777",
-	"comment": "#ffce96",
+	"comment": {
+		"color": "#ffce96",
+		"style": "italic"
+	},
 	"doc_comment": "#ffce96",
 	"operator": "#ff7777",
 	"function": "#ffce96"

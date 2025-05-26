@@ -1,0 +1,38 @@
+{
+	"name": "Ableton",
+	"background": "#afafaf",
+	"foreground": "#121212",
+	"line_number_bg": "#00303b",
+	"line_number_fg": "#ffce96",
+	"keyword": {
+		"color": "#feb902",
+		"switch_colors": "True",
+		"weight": "bold"
+	},
+	"number": {
+		"color": "#ffccff",
+		"weight": "bold"
+	},
+	"string": "#f8f47c",
+	"user_type": {
+		"color": "#ffA374",
+		"switch_colors": "True",
+		"weight": "bold"
+	},
+	"primitive_type": {
+		"color": "#8bc5ff",
+		"switch_colors": "True"
+	},
+	"comment": { 
+		"color":"#4f4f4f",
+		"style":"italic"
+	},
+	"doc_comment": {
+		"color":"#4f4f4f",
+		"style":"italic"
+	},
+	"function": {
+		"color": "#ffa374",
+		"switch_colors": "True"
+	}
+}
