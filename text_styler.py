@@ -2,6 +2,7 @@
 
 import tkinter as tk
 from token_types import Token, TokenType
+from style_reader import tag_style
 from tkinter.font import Font
 
 # Way to iterate over enum
@@ -12,12 +13,12 @@ def get_default_font():
 	default.config(size = 12)
 	return default
 
-def get_fancy_font(bold: bool, italic: bool):
-	fancy = Font(font="TkFixedFont")
+def get_fancy_font(tag:str, bold: bool, italic: bool):
+	fancy = Font(font="TkFixedFont", name=f"tag_{bold}_{italic}")
 	if (bold):
-		fancy.config(weight="bold")
+		fancy.config(weight=tk.font.BOLD)
 	if (italic):
-		fancy.config(slant="italic")
+		fancy.config(slant=tk.font.ITALIC)
 	return fancy
 
 def iter_enum(enumName, list):
@@ -40,32 +41,17 @@ class TextStyler:
 		for name in classNames:
 			tag_name = name
 			if tag_name in style:
-				# Find out if this tag defines only a color or more complex style
-				value = style[tag_name]
-				text_color = "black"
-				bg_color = "white"
+				# Set defaults
 				styledFont = get_default_font()
 				# TkFixedFont
 				# font . weight : bold 
 				# font . slant : italic
-				if type(value) == str:
-					text_color = value	
-					bg_color = style["background"]
-				elif type(value) == dict:
-					text_color = value["color"]
-					if "switch_colors" in value and value["switch_colors"] == "True":
-						bg_color = value["color"]
-						text_color = style["foreground"]
-					else:
-						text_color = value["color"]
-						bg_color = style["background"]
-					
-					bold = "weight" in value and value["weight"] == "bold"
-					slanted = "style" in value and value["style"] == "italic"
-					styledFont = get_fancy_font(bold, slanted)
+				style_def = tag_style(style, tag_name)
+				if style_def.slanted or style_def.bold:
+					styledFont = get_fancy_font(tag_name, style_def.bold, style_def.slanted)
 				
-				text_widget.tag_configure(tag_name, background = bg_color)
-				text_widget.tag_configure(tag_name, foreground = text_color)
+				text_widget.tag_configure(tag_name, background = style_def.bg_color)
+				text_widget.tag_configure(tag_name, foreground = style_def.text_color)
 				text_widget.tag_configure(tag_name, font = styledFont)
 
 	def apply_text_size(self, text_widget:object, em_size:float):

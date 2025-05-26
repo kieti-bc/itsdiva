@@ -77,22 +77,28 @@ class ItsDivaGUI:
 		self.dropdown_style.bind("<<ComboboxSelected>>", self.handle_style_select)
 
 
-		# Line numbers, text size and tab width
+		# Line numbers and border checks
 		self.use_line_numbers = tk.BooleanVar(value=False)
 		self.first_line_number = tk.StringVar(value="1")
+
 		frame_line_numbers = tk.Frame(master=frame_top)
 		check_line_numbers = ttk.Checkbutton(master=frame_line_numbers, text="Line numbers", onvalue=True, offvalue=False, variable=self.use_line_numbers)
 		label_first_line = tk.Label(master=frame_line_numbers, text="Start from:")
 		entry_first_line = tk.Entry(master=frame_line_numbers, textvariable=self.first_line_number)
+		self.draw_border = tk.BooleanVar(value=False)
+		check_draw_border = ttk.Checkbutton(master=frame_line_numbers, text="Draw border", onvalue=True, offvalue=False, variable=self.draw_border)
+
+		# Size of tab and text
+		frame_size_settings = tk.Frame(master=frame_top)
 
 		self.tab_width = tk.IntVar(value = 2)
-		label_tab_width = tk.Label(master= frame_line_numbers, text="Tab width")
-		entry_tab_width = tk.Spinbox(master=frame_line_numbers, textvariable=self.tab_width, from_=1, to=8, increment=1)
+		label_tab_width = tk.Label(master= frame_size_settings, text="Tab width")
+		entry_tab_width = tk.Spinbox(master=frame_size_settings, textvariable=self.tab_width, from_=1, to=8, increment=1)
 
-		# Other settings
-		label_text_size = tk.Label(master=frame_line_numbers, text="Text size in em")
+		label_text_size = tk.Label(master=frame_size_settings, text="Text size in em")
 		self.text_size = tk.DoubleVar(value=1.0)
-		spinner_text_size = ttk.Spinbox(master=frame_line_numbers, textvariable=self.text_size, from_=1.0, to=3.0, increment=0.1)
+		spinner_text_size = ttk.Spinbox(master=frame_size_settings, textvariable=self.text_size, from_=1.0, to=3.0, increment=0.1)
+
 
 		# User types
 		frame_user_types = tk.Frame(master=frame_top)
@@ -128,21 +134,22 @@ class ItsDivaGUI:
 		check_line_numbers.pack(side=tk.LEFT)
 		label_first_line.pack(side=tk.LEFT)
 		entry_first_line.pack(side=tk.LEFT)
+		check_draw_border.pack(side=tk.LEFT)
 
 		label_text_size.pack(side=tk.LEFT)
 		spinner_text_size.pack(side=tk.LEFT)
 
 		label_tab_width.pack(side=tk.LEFT)
 		entry_tab_width.pack(side=tk.LEFT)
+
+		frame_size_settings.pack(expand=True, fill=tk.X)
 		frame_line_numbers.pack(expand=True, fill=tk.X)
-
 		label_user_types.pack(side=tk.LEFT)
-		self.user_types_input.pack(side=tk.LEFT, expand=True, fill=tk.X)
 
+		self.user_types_input.pack(side=tk.LEFT, expand=True, fill=tk.X)
 		frame_user_types.pack(expand=True, fill=tk.X)
 
 		frame_top.pack()
-
 
 		# Input and output
 
@@ -219,7 +226,9 @@ class ItsDivaGUI:
 		except tk.TclError:
 			pass
 
-		parser = Parser(code_lines, style, language, user_types, self.use_line_numbers.get(), first_line_number, text_size, tab_width_int)
+		parser = Parser(code_lines, style, language, user_types, self.use_line_numbers.get(), first_line_number, text_size, tab_width_int, self.draw_border.get())
+
+
 
 		html_lines = parser.create_html()
 
