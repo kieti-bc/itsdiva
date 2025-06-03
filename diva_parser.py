@@ -61,7 +61,7 @@ class Parser:
 	def create_div(self):
 		div = """
 <div style=\"\
-font-family:Consolas, Monaco, 'Liberation Mono', FreeMono, monospace;\
+font-family:Consolas, Monaco, FreeMono, monospace;\
 font-size:{font_size}em;\
 {border_settings}
 color:{fg};\
