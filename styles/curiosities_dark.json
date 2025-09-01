@@ -4,13 +4,17 @@
 	"foreground": "#ffeecc",
 	"line_number_bg": "#15788c",
 	"line_number_fg": "#ffeecc",
-	"keyword": "#ff6973",
-	"number": "#ffb0a3",
+	"keyword": "#ff7983",
+	"number": "#ffc0b3",
 	"string": "#ffb0a3",
-	"user_type": "#00b9be",
-	"primitive_type": "#00b9be",
-	"comment": "#a5a8ac",
-	"doc_comment": "#a5a8ac",
-	"operator": "#a5a8ac",
-	"function": "#00b9be"
+	"user_type": "#00c9ce",
+	"primitive_type": "#bba0d3",
+	"comment": "#b5b8bc",
+	"doc_comment": "#b5b8bc",
+	"operator": "#ffeecc",
+	"function": 
+	{
+		"color": "#45a8ff",
+		"weight": "bold"
+	}
 }

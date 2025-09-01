@@ -1,7 +1,7 @@
 {
 	"name": "AYY4",
-	"background": "#00303b",
-	"foreground": "#f1f2da",
+	"background": "#f1f2da",
+	"foreground": "#00303b",
 	"line_number_bg": "#00303b",
 	"line_number_fg": "#ffce96",
 	"keyword": "#ff7777",

@@ -21,7 +21,7 @@ class Line_numbering:
 
 class Parser:
 
-	def __init__(self, source_lines, style:dict, language, user_types, enable_line_numbers:bool, starting_line_number:int, text_size:float, tab_width:int, draw_border:bool):
+	def __init__(self, source_lines : list[str], style:dict, language, user_types, enable_line_numbers:bool, starting_line_number:int, text_size:float, tab_width:int, draw_border:bool):
 		self.code_lines = source_lines
 		self.style = style
 		self.language = language
@@ -57,28 +57,30 @@ class Parser:
 			.format(bg_color=self.style["line_number_bg"], color=self.style["line_number_fg"], text=text)
 		return span
 
+	# HUOM. ItsLearning poistaa border-width asetuksen
+	def get_border_style(self):
+		if self.draw_border:
+			return f"border-width:0.05em; border-style:solid; border-color:{self.style["foreground"]};"
+		else:
+			return " "
+		
+
 # Use the monospace fonts included by default in Windows, MacOS and linux and fallback to generic monospace
 	def create_div(self):
 		div = """
 <div style=\"\
 font-family:Consolas, Monaco, FreeMono, monospace;\
 font-size:{font_size}em;\
-{border_settings}
+{border_settings}\
 color:{fg};\
 background-color:{bg};\
-padding:10px;\">
+padding:10px;">
 """.format(
 		font_size=str(self.font_size),
 		border_color=self.style["foreground"],
 		fg=self.style["foreground"], 
 		bg=self.style["background"],
-		border_settings=
-""""
-border-width:0.1em;\
-border-style:solid;\
-border-color:{border_color};
-""" if self.draw_border else ""
-		)
+		border_settings=self.get_border_style())
 		return div
 
 	def tokenize_line(self, line, language, user_types) -> list:
