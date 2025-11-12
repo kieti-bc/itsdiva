@@ -15,6 +15,7 @@ from languages.language_python import Language_Python
 from languages.language_javascript import Language_Javascript
 from languages.language_html import Language_Html
 from languages.language_sql import Language_SQL
+from languages.language_lua import Language_Lua
 from diva_parser import Parser
 from text_styler import TextStyler, get_default_font
 
@@ -34,10 +35,11 @@ class ItsDivaGUI:
 		window.title("ItsDiva")
 
 		self.languages = [
-			Language_Python(),
 			Language_Csharp(),
-			Language_Javascript(),
 			Language_Html(),
+			Language_Javascript(),
+			Language_Lua(),
+			Language_Python(),
 			Language_SQL()
 			]
 		language_names = []

@@ -1,0 +1,16 @@
+{
+	"name": "Godot",
+	"background": "#332b48",
+	"foreground": "#cfd3c1",
+	"line_number_bg": "DarkSlateGrey",
+	"line_number_fg": "WhiteSmoke",
+	"keyword": "#69cfef",
+	"number": "#f8c868",
+	"string": "#ff8e65",
+	"user_type": "#d1b3ff",
+	"primitive_type": "#8ddb34",
+	"comment": "#8488d3",
+	"doc_comment": "#8488d3",
+	"operator": "#ff8e65",
+	"function": "#fc9bd3"
+}
