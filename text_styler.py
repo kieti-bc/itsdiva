@@ -13,7 +13,24 @@ def get_default_font():
 	default.config(size = 12)
 	return default
 
-def get_fancy_font(tag:str, bold: bool, italic: bool):
+def get_fancy_font(tag:str, bold: bool, italic: bool) -> Font:
+	"""Constructs a new font based on the TkFixedFont
+
+	Parameters
+	----------
+	tag
+		Used as identifier in the font's name
+	bold
+		Use bold style
+
+	italic
+		Use italic style
+
+	Returns
+	-------
+	New font
+	"""
+
 	fancy = Font(font="TkFixedFont", name=f"tag_{bold}_{italic}")
 	if (bold):
 		fancy.config(weight=tk.font.BOLD)
@@ -21,7 +38,8 @@ def get_fancy_font(tag:str, bold: bool, italic: bool):
 		fancy.config(slant=tk.font.ITALIC)
 	return fancy
 
-def iter_enum(enumName, list):
+def iter_enum(enumName, list) -> list:
+	"""Recursively iterates over every member of the given Enumeration and adds the values to the list"""
 	for member in enumName:  
 		if inspect.isclass(member.value) and issubclass(member.value, enum.Enum):
 			iter_enum(member.value)
@@ -59,9 +77,8 @@ class TextStyler:
 		myFont.config(size = int(12.0 * em_size))
 		text_widget["font"] = myFont
 
-	# inserts text to widget and applies the correct tag
-	# based on the tokenType
 	def insert_stylized_text(self, text_widget:object, style:dict, token:object):
+		"""Inserts text to widget and applies the correct tag based on the tokenType"""
 		tagName = token.type.value # class name in style
 		if tagName in style:
 			text_widget.insert(tk.END, token.text, tagName)

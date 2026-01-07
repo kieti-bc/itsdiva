@@ -191,6 +191,7 @@ class ItsDivaGUI:
 				return style 
 
 	def convert(self):
+		"""Main function that converts the text in the text input widget to html and also styles the text in the widget"""
 		code = self.text_input.get("1.0", tk.END)
 		code_lines = code.split("\n")
 		self.text_output.delete("1.0", tk.END)

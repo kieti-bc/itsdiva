@@ -1,8 +1,14 @@
-# Returns a complex style definition
-# style can be just the color name as string or a dictionary
-# if tag is empty or invalid, will use styles foreground color only
 class tag_style:
 	def __init__(self, style:dict, tag:str):
+		""" Returns a complex style definition.
+		
+		Parameters
+		----------
+		style 
+			Can be just the color name as string or a dictionary. 
+		tag
+			If tag is empty or invalid, will use style's foreground color only
+		"""
 		params = ""
 		if tag in style:
 			params = style[tag]

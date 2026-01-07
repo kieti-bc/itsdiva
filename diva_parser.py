@@ -14,12 +14,14 @@ class Line_numbering:
 		self.width = width
 		self.current = first
 
-	def get_next_line_number(self):
+	def get_next_line_number(self) -> int:
+		"""Returns the next line number"""
 		n = self.current
 		self.current += 1
 		return n
 
 class Parser:
+	"""Parses a list of source code lines and transforms them into tokens and to html"""
 
 	def __init__(self, source_lines : list[str], style:dict, language, user_types, enable_line_numbers:bool, starting_line_number:int, text_size:float, tab_width:int, draw_border:bool):
 		self.code_lines = source_lines
@@ -34,7 +36,21 @@ class Parser:
 		self.line_numbering = Line_numbering(enable_line_numbers, starting_line_number, line_numbering_width)
 		self.draw_border = draw_border
 
-	def create_span(self, text:str, style_def:tag_style):
+	def create_span(self, text:str, style_def:tag_style) -> str:
+		"""Creates a new span element with the given style
+
+		Parameters
+		----------
+		text
+			The text that goes inside the element
+		style_def
+			The style to use for the text
+		
+		Returns
+		-------
+		str	
+			The html text for the element
+		"""
 		styleOpen = "<i>" if style_def.slanted else ""
 		styleClose = "</i>" if style_def.slanted else ""
 		weightOpen = "<b>" if style_def.bold else ""
@@ -49,7 +65,8 @@ class Parser:
 			weightOpen=weightOpen, weightClose=weightClose)
 		return span
 
-	def create_line_number_span(self):
+	def create_line_number_span(self) -> str:
+		"""Creates a span element containing a line number"""
 		width = self.line_numbering.width
 		text = "{number!s:>{width}} ".format(number=self.line_numbering.get_next_line_number(), width=self.line_numbering.width)
 		text = text.replace(" ", nbsp)
@@ -58,7 +75,8 @@ class Parser:
 		return span
 
 	# HUOM. ItsLearning poistaa border-width asetuksen
-	def get_border_style(self):
+	def get_border_style(self) -> str:
+		"""Constructs and returns the style string for the border"""
 		if self.draw_border:
 			return f"border-width:0.05em; border-style:solid; border-color:{self.style["foreground"]};"
 		else:
@@ -84,23 +102,39 @@ padding:10px;">
 		return div
 
 	def tokenize_line(self, line, language, user_types) -> list:
+		"""Creates a new scanner and uses it to tokenize the given line
+		Parameters
+		----------
+		line
+			The line of source code to tokenize
+		language
+			The target language
+		user_types
+			List of words that should be recognized as user defined types
+		Returns
+		-------
+		list
+			List of the tokens
+		"""
 		s = Scanner(self.scanner_state, line, language, user_types)
 		tokens = s.get_tokens() # state of scanner changes when reading tokens
 		self.scanner_state = s.get_state()
 		return tokens
 
 	def convert_token_text(self, token):
-			token.text = token.text.replace('&', "&amp;")
-			token.text = token.text.replace('<', "&lt;")
-			token.text = token.text.replace('>', "&gt;")
-			if token.text.startswith("\"") or token.text.startswith('\''):
-				token.text = token.text.replace('\"', "&quot;")
-				token.text = token.text.replace('\'', "&apos;")
+		"""Replaces certain characters with their html codes"""
+		token.text = token.text.replace('&', "&amp;")
+		token.text = token.text.replace('<', "&lt;")
+		token.text = token.text.replace('>', "&gt;")
+		if token.text.startswith("\"") or token.text.startswith('\''):
+			token.text = token.text.replace('\"', "&quot;")
+			token.text = token.text.replace('\'', "&apos;")
 
 	def convert_line_to_tokens(self, line:str) -> list:
 		return self.tokenize_line(line, self.language, self.user_types)
 
-	def convert_to_html(self, line:str):
+	def convert_to_html(self, line:str) -> str:
+		"""Parses a line of text and converts it to html elements"""
 		# Tokenize
 		tokens = self.convert_line_to_tokens(line)
 		# Iterate tokens
@@ -140,6 +174,7 @@ padding:10px;">
 		return line
 
 	def create_html(self) -> list:
+		"""Returns a div element containing the html representation"""
 		html_lines = []
 		div = self.create_div()
 		html_lines.append(div)
@@ -152,8 +187,16 @@ padding:10px;">
 		html_lines.append("</div>")
 		return html_lines
 
-	def print_to_text_widget(self, styler:object, text_widget:object) -> object:
-		# parses text and inserts it into a Python tkinter text widget
+	def print_to_text_widget(self, styler:object, text_widget:object):
+		"""Parses text and inserts it into a Python tkinter text widget
+		Parameters
+		----------
+		styler
+			The styler object to use for style
+		text_widget
+			The widget that receives the parsed text
+		"""
+
 		for line in self.code_lines:
 			tokens = []
 			try:

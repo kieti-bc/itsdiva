@@ -4,6 +4,9 @@ from token_types import TokenType
 from scanner_states import ScannerState
 
 class Scanner:
+	"""
+	Reads text and parses it into tokens
+	"""
 	def __init__(self, state, line, language, user_types):
 		self.state = state
 		self.source = line
@@ -13,13 +16,21 @@ class Scanner:
 		self.language = language
 		self.user_types = user_types
 
-	def get_state(self):
+	def get_state(self) -> ScannerState:
 		return self.state
 
 	def set_state(self, new_state):
+		"""Sets the scanner state. States modify the behaviour and are persistent"""
 		self.state = new_state
 
-	def get_tokens(self):
+	def get_tokens(self) -> list:
+		"""Reads all tokens in the current line of text
+
+		Returns
+		-------
+		list
+			list of tokens that were found from the line
+		"""
 		while(self.isAtEnd() == False):
 			try:
 				self.start = self.current
@@ -28,14 +39,16 @@ class Scanner:
 				print(ex)	
 		return self.tokens
 
-	def isAtEnd(self):
+	def isAtEnd(self) -> bool:
+		"""Tells if scanner has reached the end of current line"""
 		return self.current >= len(self.source)
 
-	# Returns the current text that has been scanned
-	def get_current_text(self):
+	def get_current_text(self) -> str:
+		"""Returns the current text that has been scanned"""
 		return self.source[self.start:self.current]
 
 	def add_token(self, type):
+		"""Adds a new token from text between start and current position"""
 		token_text = self.source[self.start:self.current]
 		# Notice if type is same as the previous type
 		# if the type is same, extend the previous token
@@ -46,6 +59,13 @@ class Scanner:
 
 	# Can be double or single quotes
 	def add_string_token(self, quote):
+		"""Adds a string token. Any character can be used for quotation marks. Scanner will scan until a matching character is found. Note: this does not support escape characters.
+
+		Parameters
+		----------
+		quote
+			Character that defines the string
+		"""
 		# Advance until find another "
 		while self.peek() != quote and self.isAtEnd() == False:
 			self.advance()
@@ -58,6 +78,7 @@ class Scanner:
 			self.add_token(type=TokenType.STRING)
 
 	def add_number_token(self):
+		"""Adds a number token. The number can contain one decimal separator: '.'"""
 		while (True):
 			p = self.peek()
 			if p.isdigit():
@@ -74,6 +95,7 @@ class Scanner:
 	# keyword -> KEYWORD
 	# text( -> FUNCTION
 	def add_identifier_token(self):
+		"""Adds an identifier token. The text is searched from the keyword lists of the active language"""
 	# CSS property names often contain '-' (e.g. font-size, grid-template-columns)
 		if getattr(self.language, "name", "") == "Css":
 			while self.peek().isalnum() or self.peek() in ['_', '-']:
@@ -107,14 +129,25 @@ class Scanner:
 		else:
 			self.add_token(type=TokenType.TEXT)
 
-	# Advance to the next character
-	def advance(self):
+	def advance(self) -> str:
+		"""Advances the scanner to next character and returns it"""
 		c = self.source[self.current]
 		self.current += 1
 		return c
 
-	# Advances if next character is the parameter
-	def next_is(self, character):
+	def next_is(self, character) -> bool:
+		"""Advances only if the next character is same as the parameter
+
+		Parameters
+		----------
+		character
+			The character to look for.
+		
+		Returns
+		-------
+		bool
+			True if the next character was the parameter, False otherwise
+		"""
 		if self.isAtEnd():
 			return False
 		elif self.source[self.current] != character:
@@ -123,23 +156,30 @@ class Scanner:
 			self.current += 1
 			return True
 		
-	# Returns next character
-	# Returns empty string when at end
-	def peek(self):
+	
+	def peek(self) -> str:
+		"""Returns the current character without advancing. If end of line is reached, returns empty string"""
 		if self.isAtEnd():
 			return ''
 		else:
 			return self.source[self.current]
 
-	# Returns next+amount character, 1 by default
-	# Returns empty string when at end
-	def peek_next(self, amount=1):
+	def peek_next(self, amount=1) -> str:
+		""" Returns next+amount character, 1 by default. Returns empty string when at end
+
+		Parameters
+		----------
+		amount
+			How many characters to look past the current one. Default value is 1
+		"""
+
 		if self.current + amount >= len(self.source):
 			return ''
 		else:
 			return self.source[self.current + amount]
 
 	def scan_token(self):
+		"""Advances to the next character and adds a token if possible."""
 		c = self.advance()
 		l = self.language
 		found_language_token = l.scan_token(c, self)
