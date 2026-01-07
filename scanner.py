@@ -74,8 +74,13 @@ class Scanner:
 	# keyword -> KEYWORD
 	# text( -> FUNCTION
 	def add_identifier_token(self):
-		while self.peek().isalnum() or self.peek() == '_':
-			self.advance()
+	# CSS property names often contain '-' (e.g. font-size, grid-template-columns)
+		if getattr(self.language, "name", "") == "Css":
+			while self.peek().isalnum() or self.peek() in ['_', '-']:
+				self.advance()
+		else:
+			while self.peek().isalnum() or self.peek() == '_':
+				self.advance()
 
 		token_text = self.source[self.start: self.current]
 
