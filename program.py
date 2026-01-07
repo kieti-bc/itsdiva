@@ -11,11 +11,13 @@ import os
 import glob
 
 from languages.language_csharp import Language_Csharp
-from languages.language_python import Language_Python
-from languages.language_javascript import Language_Javascript
+from languages.language_css import Language_Css
 from languages.language_html import Language_Html
-from languages.language_sql import Language_SQL
+from languages.language_javascript import Language_Javascript
 from languages.language_lua import Language_Lua
+from languages.language_python import Language_Python
+from languages.language_sql import Language_SQL
+
 from diva_parser import Parser
 from text_styler import TextStyler, get_default_font
 
@@ -36,6 +38,7 @@ class ItsDivaGUI:
 
 		self.languages = [
 			Language_Csharp(),
+			Language_Css(),
 			Language_Html(),
 			Language_Javascript(),
 			Language_Lua(),
